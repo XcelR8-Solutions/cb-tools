@@ -93,5 +93,5 @@ for instance in instances:
 	# call API here
 	url = apiEndpoint+"/api/execution-request/execute?instanceId="+str(instance['id'])
 	payload = {'script': script}
-	response = requests.post(url, verify=False, headers=headers, json=payload)
+	#response = requests.post(url, verify=False, headers=headers, json=payload)
 
