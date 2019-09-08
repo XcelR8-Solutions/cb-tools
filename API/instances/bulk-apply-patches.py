@@ -91,3 +91,7 @@ script = task['taskOptions']['script']
 for instance in instances:
 	print("PATCHING :: Instance ["+instance['name']+"] with script["+task['name']+"]")
 	# call API here
+	url = apiEndpoint+"/api/execution-request/execute?instanceId="+str(instance['id'])
+	payload = {'script': script}
+	response = requests.post(url, verify=False, headers=headers, json=payload)
+
