@@ -1,12 +1,3 @@
-import json
-import requests
-import urllib
-import sys
-import os
-
-sys.path.append(os.path.abspath(os.path.dirname(__file__) + '../..'))
-from morphapi.apps import App
-
 ##################################################################
 # 
 # File: 
@@ -37,19 +28,42 @@ from morphapi.apps import App
 #
 ##################################################################
 
+import json
+import requests
+import urllib
+import sys
+import os
+
+# Set vars
+# TODO Move this into a config file
+appPath = os.path.abspath(os.path.dirname(__file__) + '../..')
+resourcePath = appPath + "/resources"
+networkBpPath = resourcePath + "/AWSNetwork-config.json"
+appBpPath = resourcePath + "/2Tier-App-config.json"
+cloudCode = "mtaws"
+sys.path.append(appPath)
+from morphapi.apps import App
+from morphapi.cloud import Cloud
+from morphapi.network import Network
+
+# 1. Build objects and print config
 appObj = App()
+cloudObj = Cloud()
+networkObj = Network()
 appObj.printConfig()
 
-networkBP = {}
+# 2. Get cloud details
+cloudObj.out("Getting cloud info for ["+cloudCode+"]")
+zone = cloudObj.getZone(cloudCode)
 
-# 2. Run Terraform create
-#out("Running the network create in TF...");
-#networkAppInfo = runAppCreate(getAppBP())
-#print(networkAppInfo)
+# 3. Build the resource pool
+networkObj.out("Building resource pool for zoneId["+str(zone['id'])+"] type["+zone['zoneType']['code']+"]")
+resourcePool = networkObj.createResourcePool(zone['id'], zone['zoneType']['code'], "Poopie Pool", "10.1.1.1/28")
 
-# 3. Get resource pools for the desired cloud
-#out("Getting resource pools...");
-#zone = getZone("mtaws");
-#resourcePools = getResourcePools(zone.get('id'))
-#print(resourcePools)
+
+#  
+# out("Building application...");
+# appBP = appObj.getAppBP(appBpPath)
+# response = appObj.runAppCreate(appBP)
+
 

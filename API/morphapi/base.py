@@ -19,12 +19,11 @@ class APIBase(object):
         
         self.bearerToken = authInfo['access_token']
         self.headers = {'Content-Type': 'application/json','Authorization': 'Bearer {0}'.format(self.bearerToken)}
-        print(self.bearerToken)
 
-    def out(aString):
-        out = "\n--------------------------------------\n"
+    def out(self, aString):
+        out = "\n----------------------------------------------------------\n"
         out += "| "+ aString+"\n"
-        out += "--------------------------------------"
+        out += "----------------------------------------------------------"
         print(out)
 
     def printConfig(self):
