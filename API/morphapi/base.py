@@ -16,7 +16,7 @@ class APIBase(object):
         credsJSON = {'username': self.apiUsername, 'password': self.apiPassword};
         response = requests.post(url, verify=False, headers='', data=credsJSON)
         authInfo = json.loads(response.content)
-        
+
         self.bearerToken = authInfo['access_token']
         self.headers = {'Content-Type': 'application/json','Authorization': 'Bearer {0}'.format(self.bearerToken)}
 
