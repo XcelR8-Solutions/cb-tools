@@ -14,12 +14,12 @@ class Network(APIBase):
 	def getResourcePools(self, zoneId):
 		url = self.apiEndpoint+"/api/zones/"+str(zoneId)+"/resource-pools"
 		response = requests.get(url, verify=False, headers=self.headers)
-		return json.loads(response.content);
+		return json.loads(response.content)
 
 	def getNetworkTypes(self):
 		url = self.apiEndpoint+"/api/network-types"
 		response = requests.get(url, verify=False, headers=self.headers)
-		return json.loads(response.content);
+		return json.loads(response.content)
 
 	def createResourcePool(self, zoneId, zoneType, resourcePoolName, cidrBlock):
 		url = self.apiEndpoint+"/api/zones/"+str(zoneId)+"/resource-pools"
@@ -28,7 +28,7 @@ class Network(APIBase):
 			payload = {"resourcePool": {"name": resourcePoolName,"config": {"cidrBlock": cidrBlock,"tenancy": "default"},"resourcePermissions": {"all": "true",}}}
 		
 		response = requests.post(url, verify=False, headers=self.headers, json=payload)
-		return json.loads(response.content);
+		return json.loads(response.content)
 
 	def createNetwork(self, zoneId, networkName, networkDescription, networkTypeId, cidr, resourcePoolId, availabilityZone):
 		url = self.apiEndpoint+"/api/networks"
@@ -60,4 +60,23 @@ class Network(APIBase):
 		}
 		
 		response = requests.post(url, verify=False, headers=self.headers, json=payload)
-		return json.loads(response.content);
+		return json.loads(response.content)
+
+	def createSecurityGroup(self, sgName, sgDesc, zoneId, resourcePoolId):
+		url = self.apiEndpoint+"/api/security-groups"
+
+		payload = {
+			"securityGroup": {
+    			"name": sgName,
+    			"description": sgDesc,
+    			"zoneId": zoneId
+    			"customOptions" : {
+    				"vpc" : resourcePoolId
+    			}
+  			}
+		}
+		
+		response = requests.post(url, verify=False, headers=self.headers, json=payload)
+		return json.loads(response.content)
+
+
