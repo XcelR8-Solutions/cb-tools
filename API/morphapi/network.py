@@ -69,14 +69,32 @@ class Network(APIBase):
 			"securityGroup": {
     			"name": sgName,
     			"description": sgDesc,
-    			"zoneId": zoneId
-    			"customOptions" : {
+    			"zoneId": zoneId,
+    			"customOptions": {
     				"vpc" : resourcePoolId
     			}
+  			}
+		}
+
+		response = requests.post(url, verify=False, headers=self.headers, json=payload)
+		return json.loads(response.content)
+
+	def createSecurityGroupRule(self, securityGroupId, name, direction, ruleType, protocol, portRange, sourceType, source, destinationType):
+		url = self.apiEndpoint+"/api/security-groups/"+str(securityGroupId)+"/rules"
+		
+		payload = {
+			"rule": {
+    			"name": name,
+    			"direction": direction,
+    			"ruleType": ruleType,
+    			"protocol": protocol,
+    			"portRange": portRange,
+    			"sourceType": sourceType,
+    			"source": source,
+    			"destinationType": destinationType
   			}
 		}
 		
 		response = requests.post(url, verify=False, headers=self.headers, json=payload)
 		return json.loads(response.content)
-
 
