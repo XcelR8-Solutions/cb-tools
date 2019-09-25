@@ -93,11 +93,14 @@ securityGroup = sg1['securityGroup']
 print("Created security group name["+securityGroup['name']+"] in cloud["+zone['name']+"] for resourcePool["+resourcePool['externalId']+"]")
 
 # 6. Build security group rules
-# TODO Build rules into config object
+# TODO Build rules into config object.  Is this working right?
 networkObj.out("Building security group rules for id["+str(securityGroup['id'])+"] securityGroup["+awsSecurityGroupName+"]")
-networkObj.createSecurityGroupRule(securityGroup['id'], "22-in", "ingress", "customRule", "tcp", "22", "cidr", "All", "instance")
-networkObj.createSecurityGroupRule(securityGroup['id'], "22-out", "egress", "customRule", "tcp", "22", "cidr", "All", "instance")
-print("Finished creating security group rules")
+sgrResponse1 = networkObj.createSecurityGroupRule(securityGroup['id'], "22-in", "ingress", "customRule", "tcp", "22", "all", "All", "instance")
+sgrResponse2 = networkObj.createSecurityGroupRule(securityGroup['id'], "22-out", "egress", "customRule", "tcp", "22", "all", "All", "instance")
+rule1 = sgrResponse1['rule']
+rule2 = sgrResponse2['rule']
+print("Finished creating security group rule #1 - id["+str(rule1['id'])+"] name["+rule1['name']+"]")
+print("Finished creating security group rule #2 - id["+str(rule2['id'])+"] name["+rule2['name']+"]")
 
 # 7. Get cloud details
 cloudObj.out("Getting cloud info [POST MODS] for ["+awsCloudCode+"]")
@@ -105,14 +108,14 @@ cloud = cloudObj.getZone(awsCloudCode)
 print(cloud)
 
 # 8. Get app blueprint
-#appObj.out("Getting Application Blueprint ["+appBpPath+"]")
-#appBP = appObj.getAppBP(appBpPath)
+appObj.out("Getting Application Blueprint ["+appBpPath+"]")
+appBP = appObj.getAppBP(appBpPath)
 
 # 9. Merge network info into blueprint
 # TODO
 
 # 10. Create App
-#appObj.out("Building application...");
-#appResponse = appObj.runAppCreate(appBP)
-#print(appResponse);
+appObj.out("Building application...");
+appResponse = appObj.runAppCreate(appBP)
+print(appResponse);
 
