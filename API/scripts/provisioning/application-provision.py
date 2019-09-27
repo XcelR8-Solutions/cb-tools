@@ -102,14 +102,13 @@ print("Created security group name["+securityGroup['name']+"] in cloud["+zone['n
 ###### 
 # 6. Build security group rules
 ###### 
-# TODO Build rules into config object.  #FIXME!!
-#networkObj.out("Building security group rules for id["+str(securityGroup['id'])+"] securityGroup["+awsSecurityGroupName+"]")
-#sgrResponse1 = networkObj.createSecurityGroupRule(securityGroup['id'], "22-in", "ingress", "customRule", "tcp", "22", "all", "All", "instance")
-#sgrResponse2 = networkObj.createSecurityGroupRule(securityGroup['id'], "22-out", "egress", "customRule", "tcp", "22", "all", "All", "instance")
-#rule1 = sgrResponse1['rule']
-#rule2 = sgrResponse2['rule']
-#print("Finished creating security group rule #1 - id["+str(rule1['id'])+"] name["+rule1['name']+"]")
-#print("Finished creating security group rule #2 - id["+str(rule2['id'])+"] name["+rule2['name']+"]")
+networkObj.out("Building security group rules for id["+str(securityGroup['id'])+"] securityGroup["+awsSecurityGroupName+"]")
+sgrResponse1 = networkObj.createSecurityGroupRule(securityGroup['id'], "80-in", "ingress", "customRule", "tcp", "80", "network", "0.0.0.0/0", "instance")
+sgrResponse2 = networkObj.createSecurityGroupRule(securityGroup['id'], "443-in", "ingress", "customRule", "tcp", "443", "network", "0.0.0.0/0", "instance")
+rule1 = sgrResponse1['rule']
+rule2 = sgrResponse2['rule']
+print("Finished creating security group rule #1 - id["+str(rule1['id'])+"] name["+rule1['name']+"]")
+print("Finished creating security group rule #2 - id["+str(rule2['id'])+"] name["+rule2['name']+"]")
 
 ###### 
 # 7. Get app blueprint
@@ -128,7 +127,6 @@ bpMods = {
 		"networkId": "network-"+str(appSubnet['network']['id']),
 		"networkName": appSubnet['network']['name'],
 		"securityGroup": securityGroup['externalId']
-	},
 	"mysql-node-1": {
 		"resourcePoolId": resourcePool['id'],
 		"networkId": "network-"+str(dbSubnet['network']['id']),
