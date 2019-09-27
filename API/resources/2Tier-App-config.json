@@ -16,6 +16,7 @@
           "instance": {
             "cloud": "Morph Training AWS",
             "type": "tomcat",
+            "name": "tomcat-node-1",
             "layout": {
               "code": "tomcat-amazon-8.0.30-single",
               "id": 975
@@ -707,6 +708,11 @@
               "maxStorage": 21474836480
             }
           ],
+          "securityGroups": [
+            {
+              "id": "sg-be474cc2"
+            }
+          ],
           "backup": {
             "veeamManagedServer": "",
             "jobAction": "new"
@@ -721,6 +727,7 @@
           "instance": {
             "cloud": "Morph Training AWS",
             "type": "mysql",
+            "name": "mysql-node-1",
             "layout": {
               "code": "mysql-amazon-5.6-single",
               "id": 657
@@ -1511,6 +1518,11 @@
               "rootVolume": true,
               "storageType": 10,
               "maxStorage": 21474836480
+            }
+          ],
+          "securityGroups": [
+            {
+              "id": "sg-be474cc2"
             }
           ],
           "backup": {
