@@ -22,47 +22,42 @@ apiPassword = os.environ['MORPHEUS_PASSWORD']
 # Disable ssl warnings (for my example)
 requests.packages.urllib3.disable_warnings()
 
-# Out()
-def out(aString):
-	out = "\n--------------------------------------\n"
-	out += "| "+ aString+"\n"
-	out += "--------------------------------------"
-	print(out)
-
-def printConfig():
-	out = "\n===============================\n"
-	out += "= Config:\n"
-	out += "= apiEndpoint="+apiEndpoint+"\n" 
-	out += "= apiUsername="+apiUsername+"\n"
-	out += "= apiPassword="+apiPassword+"\n"
-	out += "===============================\n"
-	print(out)
-
 # Auth()
 def auth():
 	url = apiEndpoint+"/oauth/token?grant_type=password&scope=write&client_id=morph-customer"
 	credsJSON = {'username':apiUsername, 'password': apiPassword};
 	response = requests.post(url, verify=False, headers='', data=credsJSON)
 	authInfo = json.loads(response.content)
-	print(authInfo.get('access_token'))
 	return authInfo.get('access_token');
 
-# GetInstances()
-def getInstances():
+# GetInstanceByName()
+def getInstanceByName(instanceName):
+	matchInstance = ""
 	url = apiEndpoint+"/api/instances"
 	response = requests.get(url, verify=False, headers=headers)
-	return json.loads(response.content).get('instances'); 
-
-printConfig()
+	iList = json.loads(response.content);
+	for instance in iList.get('instances'):
+		if instance['name'].strip() == instanceName.strip():
+			matchInstance = instance;
+			break
+	return matchInstance; 
 
 # 1. Auth and get bearer token
-out("Doing the auth thang...")
 apiBearerToken = auth()
 headers = {'Content-Type': 'application/json','Authorization': 'Bearer {0}'.format(apiBearerToken)}
 
 # 2. Get instances in a cloud
-out("Retrieving Instances...")
-instances = getInstances()
-for instance in instances:
-	print("Instance - ID["+str(instance['id'])+"] Name["+instance['name']+"] Cloud["+instance['cloud']['name']+"]")
+instance = getInstanceByName('jb-tomcat-1003')
+print("IP_ADDR="+instance['connectionInfo'][0]['ip'])
+
+##################################################################
+#
+# DOCS: https://docs.morpheusdata.com/en/4.0.0/provisioning/automation/automation.html#task-results
+#
+# To access the above variable in a script (same workflow phase, after this script)
+# 1. Set the return type for this task to "Key/Value Pairs"
+# 2. In next script output something to this affect:  echo "keyval value: <%=results.keyval.IP_ADDR%>"
+#
+##################################################################
+
 
