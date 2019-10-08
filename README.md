@@ -2,6 +2,6 @@
 Tools to interact with Morpheus
 
 # Directories
-/API/morphapi - common python object classes for consolidated areas
-/API/resources - .json files to read in (blueprints, etc)
-/API/scripts - exmaple scripts for different API scenarios
+## /API/morphapi - common python object classes for consolidated areas
+## /API/resources - .json files to read in (blueprints, etc)
+## /API/scripts - exmaple scripts for different API scenarios
