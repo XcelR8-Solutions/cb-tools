@@ -21,6 +21,20 @@ class Network(APIBase):
 		response = requests.get(url, verify=False, headers=self.headers)
 		return json.loads(response.content)
 
+	def getAllSecurityGroupRulesBySG(self, securityGroupId):
+		url = self.apiEndpoint+"/api/security-groups/"+str(securityGroupId)+"/rules"
+
+		response = requests.get(url, verify=False, headers=self.headers)
+
+		return json.loads(response.content)
+
+	def getSecurityGroupRule(self, securityGroupId, ruleId):
+		url = self.apiEndpoint+"/api/security-groups/"+str(securityGroupId)+"/rules/"+str(ruleId)
+
+		response = requests.get(url, verify=False, headers=self.headeers)
+
+		return json.loads(response.content)
+
 	def createResourcePool(self, zoneId, zoneType, resourcePoolName, cidrBlock):
 		url = self.apiEndpoint+"/api/zones/"+str(zoneId)+"/resource-pools"
 		
@@ -98,3 +112,16 @@ class Network(APIBase):
 		response = requests.post(url, verify=False, headers=self.headers, json=payload)
 		return json.loads(response.content)
 
+	def deleteSecurityGroupRule(self, securityGroupId, ruleId):
+		url = self.apiEndpoint+"/api/security-groups/"+str(securityGroupId)+"/rules/"+str(ruleId)
+
+		response = requests.delete(url, verify=False, headers=self.headers)
+
+		return json.loads(response.content)
+
+	def deleteSecurityGroup(self, securityGroupId):
+		url = self.apiEndpoint+"/api/security-groups/"+str(securityGroupId)
+
+		response = requests.delete(url, verify=False, headers=self.headers)
+
+		return json.loads(response.content)
