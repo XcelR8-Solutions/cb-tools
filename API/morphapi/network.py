@@ -25,7 +25,19 @@ class Network(APIBase):
 		url = self.apiEndpoint+"/api/zones/"+str(zoneId)+"/resource-pools"
 		
 		if zoneType == self.AWS_ZONE_TYPE:
-			payload = {"resourcePool": {"name": resourcePoolName,"config": {"cidrBlock": cidrBlock,"tenancy": "default"},"resourcePermissions": {"all": "true",}}}
+			payload = {
+				"resourcePool": {
+					"name": resourcePoolName,
+					"config": {
+						"cidrBlock": cidrBlock,
+						"tenancy": "default"
+					},
+					"resourcePermissions": {
+						"all": "true",
+						"allPlans": "true"
+					}
+				}
+			}
 		
 		response = requests.post(url, verify=False, headers=self.headers, json=payload)
 		return json.loads(response.content)
