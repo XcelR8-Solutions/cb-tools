@@ -12,7 +12,7 @@ import os
 # -------------------
 # 1. Call API, auth, get bearer token
 # 2. Call API, get IP of machine
-# 3. Call API, create postgres check
+# 3. Call API, create socket check
 ##################################################################
 
 # Define vars
@@ -43,33 +43,29 @@ def getInstanceByName(instanceName):
       break
   return matchInstance; 
 
-# createPostgresDbCheck
-def createPostgresDbCheck(checkName, dbHost, dbPort, dbUser, dbPassword, dbName, dbQuery, checkOperator, checkResult):
+# createSocketCheck
+def createSocketCheck(checkName, host, port, sendBits, responseMatch):
 	url = apiEndpoint+"/api/monitoring/checks"
 	payload = {
-  		"check": {
-	    	"name": checkName,
-	    	"checkType": {
-	    		"code": "postgresCheck"
-	    	},
-	    	"inUptime": "true",
-	    	"severity": "critical",
-	    	"description": "null",
-	    	"checkInterval": 300,
-	    	"checkAgent": "null",
-	    	"active": "true",
-	    	"config": {
-	    		"dbHost":dbHost,
-	    		"dbPort": dbPort, 
-	    		"dbUser":dbUser,
-	    		"dbPassword":dbPassword, 
-	    		"dbName": dbName, 
-	    		"dbQuery": dbQuery, 
-	    		"checkOperator": checkOperator, 
-	    		"checkResult": checkResult
-	    	}
-		}
-	}
+		"check": {
+      "name": checkName,
+    	"checkType": {
+        "code": "socketCheck"
+      },
+    	"inUptime": "true",
+    	"severity": "critical",
+    	"description": "null",
+    	"checkInterval": 300,
+    	"checkAgent": "null",
+    	"active": "true",
+    	"config": {
+        "host": host,
+        "port": port, 
+        "send": sendBits,
+        "responseMatch": responseMatch
+      }
+  	}
+  }
 	response = requests.post(url, verify=False, headers=headers, json=payload)
 	return json.loads(response.content); 
 
@@ -78,14 +74,12 @@ apiBearerToken = auth()
 headers = {'Content-Type': 'application/json','Authorization': 'Bearer {0}'.format(apiBearerToken)}
 
 # 2. Get IP of machine to build check for
-instanceDetails = getInstanceByName('jb-postgres-db')
+instanceDetails = getInstanceByName('jb-apache-server')
 instanceIP = instanceDetails['connectionInfo'][0]['ip']
-instancePort = instanceDetails['connectionInfo'][0]['port']
-print('Creating Postgres monitor for IP['+instanceIP+'] port['+str(instancePort)+']')
+print('Creating Socket Check monitor for ['+instanceIP+'] on port[22]')
 
-# 3. Create check
-postgresDbCheck = createPostgresDbCheck('Sample Postgres Check', instanceIP, instancePort, 'jjbrassa', 'd00kie!!', 'jjbrassa', 'select * from tester', 'lt', '2')
-print(postgresDbCheck)
-
+# 3. Create web check 
+socketCheck = createSocketCheck('Sample Socket Check', instanceIP, 22, 'test', 'OK')
+print(socketCheck)
 
 

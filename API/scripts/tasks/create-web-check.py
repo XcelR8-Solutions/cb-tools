@@ -11,7 +11,8 @@ import os
 # Steps:
 # -------------------
 # 1. Call API, auth, get bearer token
-# 2. Call API, create web check
+# 2. Call API, get IP of machine
+# 3. Call API, create web check
 ##################################################################
 
 # Define vars
@@ -29,6 +30,18 @@ def auth():
 	response = requests.post(url, verify=False, headers='', data=credsJSON)
 	authInfo = json.loads(response.content)
 	return authInfo.get('access_token');
+
+# GetInstanceByName()
+def getInstanceByName(instanceName):
+  matchInstance = ""
+  url = apiEndpoint+"/api/instances"
+  response = requests.get(url, verify=False, headers=headers)
+  iList = json.loads(response.content);
+  for instance in iList.get('instances'):
+    if instance['name'].strip() == instanceName.strip():
+      matchInstance = instance;
+      break
+  return matchInstance; 
 
 # createWebCheck
 def createWebGetCheck(checkName, webGetCheckUrl):
@@ -58,8 +71,15 @@ def createWebGetCheck(checkName, webGetCheckUrl):
 apiBearerToken = auth()
 headers = {'Content-Type': 'application/json','Authorization': 'Bearer {0}'.format(apiBearerToken)}
 
-# 2. Create 
-webCheck = createWebGetCheck('Sample Web Check', 'http://google.com')
+# 2. Get IP of machine to build check for
+instanceDetails = getInstanceByName('jb-apache-server')
+instanceIP = instanceDetails['connectionInfo'][0]['ip']
+instancePort = instanceDetails['connectionInfo'][0]['port']
+checkUrl = 'http://'+instanceIP+':'+str(instancePort)
+print('Creating Webcheck monitor for URL['+checkUrl+']')
+
+# 3. Create web check 
+webCheck = createWebGetCheck('Sample Web Check', checkUrl)
 print(webCheck)
 
 
