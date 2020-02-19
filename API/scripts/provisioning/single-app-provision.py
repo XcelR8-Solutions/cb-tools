@@ -33,8 +33,8 @@ import os
 # TODO Move this into a config file
 appPath = os.path.abspath(os.path.dirname(__file__) + '../..')
 resourcePath = appPath + "/resources"
-appBpPath = resourcePath + "/CICD-lab-app-config.json"
-awsCloudCode = "mtaws"
+appBpPath = resourcePath + "/*FILE*" #<-- JSON file here
+awsCloudCode = "*CODE*" #<-- cloud code here
 
 sys.path.append(appPath)
 from morphapi.apps import App
