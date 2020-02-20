@@ -41,8 +41,6 @@ from morphapi.cloud import Cloud
 
 # 1. Build objects and print config
 appObj = App()
-cloudObj = Cloud()
-
 appObj.printConfig()
 
 ###### 
