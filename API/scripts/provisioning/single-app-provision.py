@@ -34,7 +34,6 @@ import os
 appPath = os.path.abspath(os.path.dirname(__file__) + '../..')
 resourcePath = appPath + "/resources"
 appBpPath = resourcePath + "/*FILE*" #<-- JSON file here
-awsCloudCode = "*CODE*" #<-- cloud code here
 
 sys.path.append(appPath)
 from morphapi.apps import App
@@ -47,20 +46,14 @@ cloudObj = Cloud()
 appObj.printConfig()
 
 ###### 
-# 1. Get cloud details
-######
-cloudObj.out("Getting cloud info for ["+awsCloudCode+"]")
-zone = cloudObj.getZone(awsCloudCode)
-
-###### 
-# 2. Get app blueprint
+# 1. Get app blueprint
 ###### 
 appObj.out("Getting Application Blueprint...")
 print(appBpPath)
 appBP = appObj.getAppBP(appBpPath)
 
 ###### 
-# 9. Create App
+# 2. Create App
 ###### 
 appObj.out("Building application...");
 appResponse = appObj.runAppCreate(appBP)
