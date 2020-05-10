@@ -50,5 +50,5 @@ for account in accounts['accounts']:
 
 # 3. Get billing
 reportsObj.out("Retrieving billing details");
-billingDeets = reportsObj.getBilling(3);
+billingDeets = reportsObj.getBilling(2);
 print("Billing Deets - name["+billingDeets['billingInfo']['name']+"] startDate["+billingDeets['billingInfo']['startDate']+"] endDate["+billingDeets['billingInfo']['endDate']+"] price["+str(billingDeets['billingInfo']['price'])+"]");

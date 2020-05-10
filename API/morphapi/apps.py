@@ -39,3 +39,12 @@ class App(APIBase):
         url = self.apiEndpoint+"/api/apps/"+str(appId)
         response = requests.get(url, verify=False, headers=self.headers)
         return json.loads(response.content);
+
+    def getApps(self, searchTerm):
+        url = self.apiEndpoint+"/api/apps"
+        
+        if(searchTerm):
+            url = self.apiEndpoint+"/api/apps?phrase="+searchTerm
+        
+        response = requests.get(url, verify=False, headers=self.headers)
+        return json.loads(response.content);
