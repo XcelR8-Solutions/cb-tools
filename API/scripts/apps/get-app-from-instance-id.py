@@ -30,22 +30,23 @@ import os
 # Set vars
 # TODO Move this into a config file
 appPath = os.path.abspath(os.path.dirname(__file__) + '../..')
-searchTerm = ""
+instanceId = "9"
 
 sys.path.append(appPath)
 from morphapi.apps import App
+from morphapi.instance import Instance
 
 # 1. Build objects and print config
 appObj = App()
+instanceObj = Instance()
 
-appObj.printConfig()
+instanceObj.printConfig()
 
 ###### 
 # 1. Get instances
 ######
-appObj.out("Getting apps")
-apps = appObj.getApps(searchTerm)
-# Print out the apps
-for app in apps.get('apps'):
-	print("App id["+str(app['id'])+"] name["+app['name']+"] description["+str(app['description'])+"]")
+instanceObj.out("Getting instance for id["+instanceId+"]...")
+instance = instanceObj.getIntanceById(instanceId)
+# Print out the instance info
+print(instance)
 print("\n")

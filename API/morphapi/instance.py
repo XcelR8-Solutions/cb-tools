@@ -22,3 +22,8 @@ class Instance(APIBase):
 				matchInstance = instance;
 				break
 		return matchInstance; 
+
+	def getIntanceById(self, instanceId):
+		url = self.apiEndpoint+"/api/instances"
+		response = requests.get(url, verify=False, headers=self.headers)
+		return json.loads(response.content);
