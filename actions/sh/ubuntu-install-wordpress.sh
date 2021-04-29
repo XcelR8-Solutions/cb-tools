@@ -10,7 +10,7 @@ echo "============================================"
 echo "| dbname - $dbname"
 echo "| dbuser - $dbuser"
 echo "| dbpass - $dbpass"
-echo "| wphost - $wphost"
+echo "| dbhost - $dbhost"
 echo "============================================"
 
 # wordpress prereqs
