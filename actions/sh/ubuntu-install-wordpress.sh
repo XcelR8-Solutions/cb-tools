@@ -47,6 +47,7 @@ chmod 775 wp-content/uploads
 
 echo "Copying WordPress files to /var/www/html..."
 cp -r /tmp/wordpress/* /var/www/html
+mv /var/www/html/index.html /var/www/html/index.html.old
 systemctl restart apache2
 
 echo "Cleaning..."
