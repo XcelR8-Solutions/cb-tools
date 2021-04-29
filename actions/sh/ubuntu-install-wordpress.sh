@@ -14,7 +14,7 @@ echo "| dbhost - $dbhost"
 echo "============================================"
 
 # wordpress prereqs
-apt-get install apache2 php5 libapache2-mod-php5 php5-mysql php5-mysqlnd curl debconf-utils
+apt install -y apache2 php libapache2-mod-php php-opcache php-cli php-gd php-curl php-mysql
 
 # download wordpress
 curl -O https://wordpress.org/latest.tar.gz
@@ -46,7 +46,7 @@ chmod 775 wp-content/uploads
 
 echo "Copying WordPress files to /var/www/html..."
 cp -r ~/wordpress/* /var/www/html
-service httpd restart
+systemctl restart apache2
 
 echo "Cleaning..."
 rm ../latest.tar.gz
