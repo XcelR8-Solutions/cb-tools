@@ -3,7 +3,7 @@
 dbname='{{server.database_name}}'
 dbuser='{{server.database_username}}'
 dbpass='{{server.database_password}}'
-dbhost='{{blueprint_context.wordpress_database.servers.0.ip}}'
+dbhost='{{blueprint_context.wordpress_database.server.ip}}'
 
 echo "WordPress Install Script"
 echo "============================================"

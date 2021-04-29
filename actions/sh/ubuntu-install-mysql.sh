@@ -3,7 +3,7 @@
 dbname='{{server.database_name}}'
 dbuser='{{server.database_username}}'
 dbpass='{{server.database_password}}'
-wphost='{{blueprint_context.wordpress_server.servers.0.ip}}'
+wphost='{{blueprint_context.wordpress_server.server.ip}}'
 
 echo "Installing mysql server"
 echo "============================================"
