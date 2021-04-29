@@ -14,14 +14,7 @@ echo "| dbhost - $dbhost"
 echo "============================================"
 
 # wordpress prereqs
-python -mplatform | grep -qi ubuntu
-is_ubuntu=$?
-
-if [ $is_ubuntu -eq 0 ]; then
-    apt-get install apache2 php5 libapache2-mod-php5 php5-mysql php5-mysqlnd curl debconf-utils
-else
-    yum install -y httpd php php-common php-mysql php-gd php-xml php-mbstring php-mcrypt 
-fi
+apt-get install apache2 php5 libapache2-mod-php5 php5-mysql php5-mysqlnd curl debconf-utils
 
 # download wordpress
 curl -O https://wordpress.org/latest.tar.gz
