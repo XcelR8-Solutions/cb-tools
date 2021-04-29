@@ -17,6 +17,7 @@ echo "============================================"
 apt install -y apache2 php libapache2-mod-php php-opcache php-cli php-gd php-curl php-mysql
 
 # download wordpress
+cd /tmp
 curl -O https://wordpress.org/latest.tar.gz
 # unzip wordpress
 tar -zxf latest.tar.gz
@@ -45,7 +46,7 @@ mkdir -p wp-content/uploads
 chmod 775 wp-content/uploads
 
 echo "Copying WordPress files to /var/www/html..."
-cp -r ~/wordpress/* /var/www/html
+cp -r /tmp/wordpress/* /var/www/html
 systemctl restart apache2
 
 echo "Cleaning..."
