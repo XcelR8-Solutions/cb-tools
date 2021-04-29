@@ -20,7 +20,7 @@ systemctl start mysql.service
 echo " -> Creating database with the name '$dbname'..."
 mysql -u root <<-EOSQL
   CREATE DATABASE $dbname;
-  CREATE USER '${dbuser}'@'localhost' IDENTIFIED BY '${dbpass}';
+  CREATE USER '${dbuser}'@'${wphost}' IDENTIFIED BY '${dbpass}';
   GRANT ALL PRIVILEGES ON $dbname.* TO '${dbuser}'@'${wphost}';
   FLUSH PRIVILEGES;
 EOSQL
