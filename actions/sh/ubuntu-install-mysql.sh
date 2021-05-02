@@ -25,13 +25,9 @@ mysql -u root <<-EOSQL
   FLUSH PRIVILEGES;
 EOSQL
 
-# allow login from wordpress server
-cat <<EOF >> /etc/my.cnf
-[mysqld]
-bind-address=0.0.0.0
-EOF
+# open up mysql to remove conns
+sed -i 's/127.0.0.1/0.0.0.0/g' /etc/mysql/mysql.conf.d/mysqld.cnf
 
-systemctl stop mysql.service
-systemctl start mysql.service
+systemctl restart mysql.service
 
 echo " -> MySQL server installation completed."
