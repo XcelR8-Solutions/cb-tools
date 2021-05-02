@@ -26,9 +26,12 @@ mysql -u root <<-EOSQL
 EOSQL
 
 # allow login from wordpress server
-#cat <<EOF >> /etc/my.cnf
-#[mysqld]
-#bind-address=0.0.0.0
-#EOF
+cat <<EOF >> /etc/my.cnf
+[mysqld]
+bind-address=0.0.0.0
+EOF
+
+systemctl stop mysql.service
+systemctl start mysql.service
 
 echo " -> MySQL server installation completed."
