@@ -1,55 +1,79 @@
 """
-This is a working sample CloudBolt plug-in for you to start with. The run method is required,
-but you can change all the code within it. See the "CloudBolt Plug-ins" section of the docs for
-more info and the CloudBolt forge for more examples:
+Plugin: SageMaker!
 https://github.com/CloudBoltSoftware/cloudbolt-forge/tree/master/actions/cloudbolt_plugins
 """
 from common.methods import set_progress
-from infrastructure.models import CustomField
+from infrastructure.models import CustomField, Environment
 from resourcehandlers.aws.models import AWSHandler
 import boto3
 
 
-def generate_options_for_aws_rh(server=None, **kwargs):
-    options = []
-    for rh in AWSHandler.objects.all():
-        options.append((rh.id, rh.name))
-    return sorted(options, key=lambda tup: tup[1].lower())
+###
+# AWS Environment Dropdown
+###
+def generate_options_for_aws_environment(profile=None, **kwargs):
+    envs_this_user_can_view = Environment.objects_for_profile(profile)
+    aws_handlers = AWSHandler.objects.all()
+    aws_envs = envs_this_user_can_view.filter(resource_handler_id__in=aws_handlers)
+    envs = [('', 'Select an Environment')]
+    for env in aws_envs:
+        envs.append((env.id, env.name))
+    return envs
 
 
-def create_custom_fields():
-    CustomField.objects.get_or_create(
-        name='aws_rh_id',
-        defaults={'type': 'STR',
-                  'label': 'AWS RH ID',
-                  'description': 'Resource handler ID for Resource handler being used to connect to AWS'
-                  })
+###
+# Subnet Dropdown
+###
+def generate_options_for_subnet(profile=None, **kwargs):
+    return []
 
 
+###
+# Security Group
+###
+def generate_options_for_securitygroup(profile=None, **kwargs):
+    return []
+
+
+###
+# Role
+###
+def generate_options_for_role(profile=None, **kwargs):
+    return []
+
+
+###
+# Main Run Method
+###
 def run(job, *args, **kwargs):
-    rh_id = '{{ aws_rh }}'
+    env = Environment.objects.get(id='{{ aws_environment }}')
+    subnet = '{{ subnet }}'
+    securitygroup = '{{ securitygroup }}'
+    role = '{{ role }}'
     notebook_instance_name = '{{ notebook_instance_name_input }}'
-    rh = AWSHandler.objects.get(id=rh_id)
-    create_custom_fields()
+    rh = AWSHandler.objects.get(id=env.resource_handler.id)
 
     set_progress("Connection to Amazon Sagemaker...")
+
     client = boto3.client(
         'sagemaker',
-        region_name='us-west-1',
+        region_name=env.aws_region,
         aws_access_key_id=rh.serviceaccount,
         aws_secret_access_key=rh.servicepasswd
     )
 
     set_progress("Creating Sagemaker notebook instance - {}".format(notebook_instance_name))
+
     response = client.create_notebook_instance(
         NotebookInstanceName=notebook_instance_name,
         InstanceType='ml.t2.large',
-        SubnetId='subnet-5a2de63f',
+        SubnetId=subnet,
         SecurityGroupIds=[
-            'sg-77924512',
+            securitygroup,
         ],
-        RoleArn='arn:aws:iam::486888425288:role/service-role/AmazonSageMaker-ExecutionRole-20210324T085177',
+        RoleArn=role,
     )
+
     if True:
         return "SUCCESS", "Sucessfully created new Sagemaker notebook instance", ""
     else:
