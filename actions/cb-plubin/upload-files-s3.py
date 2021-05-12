@@ -4,6 +4,7 @@ Plugin: Upload Files to S3 Bucket
 
 import os
 import boto3
+from botocore.exceptions import ClientError
 from common.methods import set_progress
 from infrastructure.models import Environment
 from resourcehandlers.aws.models import AWSHandler
@@ -40,15 +41,14 @@ def run(job, *args, **kwargs):
     set_progress("Moving files into bucket ["+s3_bucket_name+"]...")
     try:
         for entry in os.scandir("/tmp/cb-tools/app-samples/HTTP-App"):
-            logger.debug("FILE==> "+entry.path)
-            set_progress("FILE==> "+entry.path)
-        #response = s3_client.upload_file(file_name, s3_bucket_name, object_name)
-    except Exception as ex:
-        logger.error(ex)
+            set_progress("Uploading file["+entry.name+"]")
+            response = s3_client.upload_file(entry.path, s3_bucket_name, entry.name)
+    except ClientError as ce:
+        logger.error(ce)
 
     # 5. Cleanup!
     set_progress("FINISH: Moving files Amazon S3...")
-    #os.system("rm -rf /tmp/cb-tools")
+    os.system("rm -rf /tmp/cb-tools")
 
     if True:
         return "SUCCESS", "Files moved to S3 Bucket successfully", ""
