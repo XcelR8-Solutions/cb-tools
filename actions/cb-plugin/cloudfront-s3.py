@@ -15,9 +15,10 @@ logger = ThreadLogger(__name__)
 def run(job, *args, **kwargs):
 
     # 1. Pull params from previous blueprint
-    rh_id = '{{ blueprint_context.aws_s3_bucket.create_s3_bucket.aws_rh }}'
-    region = '{{ blueprint_context.aws_s3_bucket.create_s3_bucket.s3_region }}'
-    s3_bucket_name = '{{blueprint_context.aws_s3_bucket.create_s3_bucket.s3_bucket_name_input}}'
+    rh_id = '{{ blueprint_context.fancy_aws_s3_bucket.create_secure_s3_bucket.aws_rh }}'
+    region = '{{ blueprint_context.fancy_aws_s3_bucket.create_secure_s3_bucket.s3_region }}'
+    s3_bucket_name = '{{blueprint_context.fancy_aws_s3_bucket.create_secure_s3_bucket.s3_bucket_name_input}}'
+
 
     # 2. Connect to bucket
     set_progress("Connecting to Amazon S3... rh["+rh_id+"] region["+region+"]")
@@ -37,6 +38,7 @@ def run(job, *args, **kwargs):
     s3_client.put_bucket_website(Bucket=s3_bucket_name, WebsiteConfiguration=website_configuration)
 
     # 3. Build CloudFront Entries?!
+
 
     if True:
         return "SUCCESS", "CloudFront Config Successfully laid in", ""
