@@ -3,7 +3,6 @@
 # Install apache (RHEL/CentOS)
 
 echo "Installing apache..."
-yum update -y
 yum install -y httpd
 
 echo "Configuring apache..."

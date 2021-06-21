@@ -3,7 +3,6 @@
 # Install static website from github
 
 echo "Installing git..."
-yum update -y
 yum install -y git
 
 echo "Cloning website..."
