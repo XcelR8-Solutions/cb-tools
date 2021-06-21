@@ -2,8 +2,6 @@
 #
 # Install static website from github
 
-sudo su -
-
 echo "Installing git..."
 yum update -y
 yum install -y git

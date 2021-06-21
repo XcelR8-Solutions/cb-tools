@@ -2,8 +2,6 @@
 #
 # Install apache (RHEL/CentOS)
 
-sudo su -
-
 echo "Installing apache..."
 yum update -y
 yum install -y httpd
