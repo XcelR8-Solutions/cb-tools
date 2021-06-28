@@ -1,11 +1,12 @@
 """
-Delete an Azure virtual network.
+Delete an Azure resource group and virtual network.
 """
 from common.methods import set_progress
 from azure.common.credentials import ServicePrincipalCredentials
 from msrestazure.azure_exceptions import CloudError
 from resourcehandlers.azure_arm.models import AzureARMHandler
 from azure.mgmt.network import NetworkManagementClient
+from azure.mgmt.resource import ResourceManagementClient
 
 ###
 # Main run() method
@@ -27,15 +28,18 @@ def run(job, **kwargs):
         tenant=rh.azure_tenant_id,
     )
     network_client = NetworkManagementClient(credentials, rh.serviceaccount)
+    rg_client = ResourceManagementClient(credentials, rh.serviceaccount)
     set_progress("Connection to Azure established")
 
     # 3. Delete VNet
-    set_progress("Deleting virtual network %s..." % (virtual_net_name))
+    set_progress("Deleting VNet["+virtual_net_name+"] ResourceGroup["+resource_group+"]...")
     try:
         network_client.virtual_networks.delete(resource_group_name=resource_group, virtual_network_name=virtual_net_name)
+        delete_async_operation = rg_client.resource_groups.delete(resource_group)
+        delete_async_operation.wait()
     except CloudError as e:
         set_progress("Azure Clouderror: {}".format(e))
-        return "FAILURE", "Virtual network could not be deleted", ""
+        return "FAILURE", "ResourceGroup and VNet could not be deleted", ""
 
     # 4. Return results
-    return "SUCCESS", "The virtual net has been succesfully deleted", ""
+    return "SUCCESS", "The ResourceGroup and VNet have been successfully deleted", ""

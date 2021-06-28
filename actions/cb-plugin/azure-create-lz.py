@@ -1,11 +1,12 @@
 """
-Creates an Azure virtual network (VNet).
+Creates an Azure resource group and virtual network (VNet).
 """
 from common.methods import set_progress
 from infrastructure.models import CustomField
 from infrastructure.models import Environment
 from azure.common.credentials import ServicePrincipalCredentials
 from msrestazure.azure_exceptions import CloudError
+from azure.mgmt.resource import ResourceManagementClient
 from azure.mgmt.network import NetworkManagementClient
 
 
@@ -74,13 +75,14 @@ def run(job, **kwargs):
     rh = env.resource_handler.cast()
     location = env.node_location
 
-    resource_group = 'cb-default-rg'
+    resource_group = '{{ resource_group }}'
     virtual_net_name = '{{ virtual_net_name }}'
     vpn_adress_prefix = '{{ vpn_adress_prefix }}'
     subnet_adress_prefix = '{{ subnet_adress_prefix }}'
     subnet_name = virtual_net_name + '_subnet'
 
     # 2. Echo out
+    set_progress("resource group["+resource_group+"]")
     set_progress("location[" + location + "]")
     set_progress("resource_group[" + resource_group + "]")
     set_progress("virtual_net_name[" + virtual_net_name + "]")
@@ -96,9 +98,17 @@ def run(job, **kwargs):
         tenant=rh.azure_tenant_id,
     )
     network_client = NetworkManagementClient(credentials, rh.serviceaccount)
+    rg_client = ResourceManagementClient(credentials, rh.serviceaccount)
     set_progress("Connection to Azure established")
 
-    # 4. Create the VNet
+    # 4. Create RG
+    set_progress('Creating resource group "%s"...' % resource_group)
+    try:
+        rg_client.resource_groups.create_or_update(resource_group, {'location': location})
+    except CloudError as e:
+        set_progress('Azure Clouderror: {}'.format(e))
+
+    # 5. Create the VNet
     set_progress('Creating virtual network "%s"...' % virtual_net_name)
     try:
         async_vnet_creation = network_client.virtual_networks.create_or_update(
@@ -115,7 +125,7 @@ def run(job, **kwargs):
     except CloudError as e:
         set_progress('Azure Clouderror: {}'.format(e))
 
-    # 5. Create the Subnet in VNet
+    # 6. Create the Subnet in VNet
     set_progress('Creating subnet "%s"...' % subnet_name)
     try:
         async_subnet_creation = network_client.subnets.create_or_update(
@@ -132,8 +142,8 @@ def run(job, **kwargs):
     assert subnet_info.name == subnet_name
     set_progress('Subnet "%s" has been created.' % subnet_name)
 
-    # 6. Set meta-data on object
-    resource.name = virtual_net_name + " - " + resource_group
+    # 7. Set meta-data on object
+    resource.name = resource_group + " - " + virtual_net_name
     resource.azure_virtual_net_name = virtual_net_name
     resource.vpn_adress_prefix = vpn_adress_prefix
     resource.resource_group_name = resource_group
@@ -142,5 +152,5 @@ def run(job, **kwargs):
     resource.azure_subnet_name = subnet_name
     resource.save()
 
-    # 7. Return result
-    return "SUCCESS", "The vpn and subnet have been successfully created", ""
+    # 8. Return result
+    return "SUCCESS", "The LZ (RG + VNet) have been successfully created", ""
