@@ -8,11 +8,11 @@ from resourcehandlers.azure_arm.models import AzureARMHandler
 from azure.mgmt.network import NetworkManagementClient
 from azure.mgmt.resource import ResourceManagementClient
 
+
 ###
 # Main run() method
 ###
 def run(job, **kwargs):
-
     # 1. Get attributes stored on meta data
     resource = kwargs.pop('resources').first()
     virtual_net_name = resource.attributes.get(field__name='azure_virtual_net_name').value
@@ -32,11 +32,18 @@ def run(job, **kwargs):
     set_progress("Connection to Azure established")
 
     # 3. Delete VNet
-    set_progress("Deleting VNet["+virtual_net_name+"] ResourceGroup["+resource_group+"]...")
+    set_progress("Deleting VNet[" + virtual_net_name + "] ResourceGroup[" + resource_group + "]...")
     try:
-        network_client.virtual_networks.delete(resource_group_name=resource_group, virtual_network_name=virtual_net_name)
+        network_client.virtual_networks.delete(resource_group_name=resource_group,
+                                               virtual_network_name=virtual_net_name)
         delete_async_operation = rg_client.resource_groups.delete(resource_group)
         delete_async_operation.wait()
+
+        # refresh environment
+        server = job.server_set.first()
+        env = server.environment
+        rh.import_parameters_for_env(env, 'resource_group_arm')
+        rh.sync_subnets(env)
     except CloudError as e:
         set_progress("Azure Clouderror: {}".format(e))
         return "FAILURE", "ResourceGroup and VNet could not be deleted", ""
