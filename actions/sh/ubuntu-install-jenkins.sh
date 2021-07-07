@@ -15,6 +15,9 @@ JRE_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre
 EOL
 source /etc/environment
 
+echo "Sleep for 30s..."
+sleep 30
+
 echo "--------------------------------------------"
 echo "| Installing jenkins..."
 echo "--------------------------------------------"
