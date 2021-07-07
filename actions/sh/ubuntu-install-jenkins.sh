@@ -22,6 +22,6 @@ echo "Firing jenkins UP!..."
 systemctl start jenkins
 systemctl status jenkins
 
-echo "Your jenkins box [$myServer:8080]"
+echo "Your jenkins box [http://$myServer:8080]"
 myInitPswd=$( cat /var/lib/jenkins/secrets/initialAdminPassword )
 echo "Your initialAdminPassword [$myInitPswd]"
