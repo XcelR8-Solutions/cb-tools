@@ -37,22 +37,31 @@ $BPCreate = @'
     "items": {
         "deploy-items": [
             {
-                "blueprint": "/api/v2/blueprints/BP-df7476du/",
+                "blueprint": "/api/v2/blueprints/BP-ammouvoq/",
                 "blueprint-items-arguments": {
-                    "build-item-Ubuntu-18.04-Build": {
+                    "build-item-Server": {
                         "attributes": {
+                            "hostname": "jeffb-from-api-yo",
                             "quantity": 1
                         },
                         "environment": "/api/v2/environments/ENV-zsxxio85/",
-                        "os-build": "/api/v2/os-builds/OSB-2qeptzs2/",
+                        "os-build": "/api/v2/os-builds/OSB-54avjkl3/",
                         "parameters": {
                             "app-name": "App Server",
                             "cost-center": "Finance",
+                            "ebs-volume-type": "gp2",
+                            "hostname-template": "jeffb-from-api-yo",
+                            "instance-type": "t3.nano",
+                            "key-name": "cb-jbrassard",
+                            "sc-nic-0": "subnet-5a2de63f",
+                            "sec-groups": [
+                                "default"
+                            ],
                             "service-tier": "24x7x7"
                         }
                     }
                 },
-                "resource-name": "ubuntu1804",
+                "resource-name": "",
                 "resource-parameters": {}
             }
         ]
