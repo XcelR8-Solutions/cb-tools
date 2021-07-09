@@ -4,6 +4,8 @@
 
 myServer='{{server.ip}}'
 
+killall apt apt-get
+
 echo "--------------------------------------------"
 echo "| Installing java..."
 echo "--------------------------------------------"
