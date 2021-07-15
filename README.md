@@ -1,5 +1,5 @@
-# morpheus-tools
-Tools to interact with Morpheus
+# cb-tools
+Tools to interact with CloudBolt
 
 # Directories
 - /API/morphapi - common python object classes for consolidated areas
