@@ -12,13 +12,13 @@ $Headers = @{
 }
 
 $Body = @{
-   'username' = 'jbrassard'
-   'password' = 'D00kie4me!!'
+   'username' = '<# username #>'
+   'password' = '<# password #>'
 }
  
 $Parameters = @{
     Method = "Post"
-    Uri =  "https://cloudbolt-local.com/api/v2/api-token-auth/"
+    Uri =  "https://<# appliance url #>/api/v2/api-token-auth/"
     Body = ($Body | ConvertTo-Json) 
     ContentType = "application/json"
     Headers = $Headers
@@ -55,7 +55,7 @@ $Headers2 = @{
 
 $Parameters2 = @{
     Method = "Post"
-    Uri =  "https://cloudbolt-local.com/api/v2/orders/"
+    Uri =  "https://<# appliance url #>/api/v2/orders/"
     ContentType = "application/json"
     Headers = $Headers2
     Body = $OrderDelete
