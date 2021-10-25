@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mongo
+  name: guestbook-mongo
   #namespace: ns-cb-guestbook
   labels:
-    app.kubernetes.io/name: mongo
-    app.kubernetes.io/component: backend
+    app.kubernetes.io/name: guestbook-mongo
+    app.kubernetes.io/component: guestbook-backend
 spec:
   selector:
     matchLabels:
-      app.kubernetes.io/name: mongo
-      app.kubernetes.io/component: backend
+      app.kubernetes.io/name: guestbook-mongo
+      app.kubernetes.io/component: guestbook-backend
   replicas: 1
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: mongo
-        app.kubernetes.io/component: backend
+        app.kubernetes.io/name: guestbook-mongo
+        app.kubernetes.io/component: guestbook-backend
     spec:
       containers:
       - name: mongo

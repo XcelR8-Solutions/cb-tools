@@ -1,25 +1,25 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: frontend
+  name: guestbook-frontend
   #namespace: ns-cb-guestbook
   labels:
-    app.kubernetes.io/name: guestbook
-    app.kubernetes.io/component: frontend
+    app.kubernetes.io/name: guestbook-guestbook
+    app.kubernetes.io/component: guestbook-frontend
 spec:
   selector:
     matchLabels:
-      app.kubernetes.io/name: guestbook
-      app.kubernetes.io/component: frontend
+      app.kubernetes.io/name: guestbook-guestbook
+      app.kubernetes.io/component: guestbook-frontend
   replicas: 3
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: guestbook
-        app.kubernetes.io/component: frontend
+        app.kubernetes.io/name: guestbook-guestbook
+        app.kubernetes.io/component: guestbook-frontend
     spec:
       containers:
-      - name: guestbook
+      - name: guestbook-guestbook
         image: paulczar/gb-frontend:v5
         # image: gcr.io/google-samples/gb-frontend:v4
         resources:

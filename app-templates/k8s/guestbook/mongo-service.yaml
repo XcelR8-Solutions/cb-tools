@@ -1,15 +1,15 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: mongo
+  name: guestbook-mongo
   #namespace: ns-cb-guestbook
   labels:
-    app.kubernetes.io/name: mongo
-    app.kubernetes.io/component: backend
+    app.kubernetes.io/name: guestbook-mongo
+    app.kubernetes.io/component: guestbook-backend
 spec:
   ports:
   - port: 27017
     targetPort: 27017
   selector:
-    app.kubernetes.io/name: mongo
-    app.kubernetes.io/component: backend
+    app.kubernetes.io/name: guestbook-mongo
+    app.kubernetes.io/component: bguestbook-ackend
