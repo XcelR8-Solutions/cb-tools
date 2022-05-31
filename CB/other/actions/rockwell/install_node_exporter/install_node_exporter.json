@@ -1,0 +1,16 @@
+{
+    "action-input-default-values": [
+        {
+            "label": "Enable Monitoring",
+            "name": "enable_monitoring_a249",
+            "value": "{{server.enable_monitoring}}"
+        }
+    ],
+    "base-action-name": "Install Node Exporter",
+    "continue-on-failure": false,
+    "description": "",
+    "enabled": "False",
+    "hook-point": "Post-Provision",
+    "name": "Install Node Exporter",
+    "run-on-statuses": "SUCCESS,WARNING"
+}

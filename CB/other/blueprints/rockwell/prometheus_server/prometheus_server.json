@@ -1,0 +1,103 @@
+{
+    "any-group-can-deploy": true,
+    "auto-historical-resources": false,
+    "build-items": [
+        {
+            "all-environments-enabled": false,
+            "allowable-os-families": [
+                "Amazon Linux",
+                "CentOS",
+                "Fedora",
+                "Oracle Enterprise Linux",
+                "Red Hat"
+            ],
+            "deploy-seq": 1,
+            "description": "",
+            "execute-in-parallel": false,
+            "hostname-template": "prometheus-000X",
+            "name": "Build VM",
+            "restrict-applications": false,
+            "show-on-order-form": true,
+            "type": "provserver"
+        },
+        {
+            "action-name": "Pause Job X Seconds (2)",
+            "continue-on-failure": false,
+            "deploy-seq": 2,
+            "description": "",
+            "execute-in-parallel": false,
+            "name": "Pause",
+            "parameter-defaults": [
+                {
+                    "label": "Seconds To Wait",
+                    "name": "SECONDS_TO_WAIT_a242",
+                    "value": "15"
+                }
+            ],
+            "run-on-scale-up": true,
+            "show-on-order-form": true,
+            "type": "plugin"
+        },
+        {
+            "action-name": "Install Yum Package (3)",
+            "continue-on-failure": false,
+            "deploy-seq": 3,
+            "description": "",
+            "execute-in-parallel": false,
+            "name": "Install epel-release",
+            "parameter-defaults": [
+                {
+                    "label": "Packages",
+                    "name": "packages_a243",
+                    "value": "epel-release wget"
+                }
+            ],
+            "run-on-scale-up": true,
+            "server-tiers": [
+                "Build VM"
+            ],
+            "show-on-order-form": true,
+            "type": "script"
+        },
+        {
+            "action-name": "Disable SELinux (2)",
+            "continue-on-failure": false,
+            "deploy-seq": 4,
+            "description": null,
+            "execute-in-parallel": false,
+            "name": "Disable SELinux",
+            "run-on-scale-up": true,
+            "show-on-order-form": false,
+            "type": "script"
+        },
+        {
+            "action-name": "Install Prometheus TSDB",
+            "continue-on-failure": false,
+            "deploy-seq": 5,
+            "description": null,
+            "execute-in-parallel": false,
+            "name": "Install Prometheus TSDB",
+            "run-on-scale-up": true,
+            "show-on-order-form": true,
+            "type": "script"
+        }
+    ],
+    "description": "A Prometheus server in the enterprise cloud of your choice.  The server URL will be sent to you via Slack.",
+    "favorited": true,
+    "icon": "1200px-Prometheus_software_logo.svg.png",
+    "is-orderable": true,
+    "management-actions": [],
+    "name": "Prometheus Server",
+    "resource-name-template": "Prometheus Server 00X",
+    "resource-type": {
+        "icon": "",
+        "label": "Service",
+        "lifecycle": "ACTIVE",
+        "list-view-columns": [],
+        "name": "service",
+        "plural-label": null
+    },
+    "sequence": 0,
+    "show-recipient-field-on-order-form": false,
+    "teardown-items": []
+}

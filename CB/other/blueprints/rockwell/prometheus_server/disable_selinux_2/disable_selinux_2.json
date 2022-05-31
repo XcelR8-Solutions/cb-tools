@@ -1,0 +1,21 @@
+{
+    "commandline-args": null,
+    "credentials": "YOUR_CREDENTIALS",
+    "description": "",
+    "execution-timeout": 120,
+    "max-retries": 0,
+    "name": "Disable SELinux (2)",
+    "remove-after-run": true,
+    "resource-technologies": [],
+    "run-with-sudo": true,
+    "script-filename": "remote_script_ASaRuqt",
+    "shared": "True",
+    "target-os-families": [
+        "Linux -> Amazon Linux",
+        "Linux -> CentOS",
+        "Linux -> Fedora",
+        "Linux -> Oracle Enterprise Linux",
+        "Linux -> Red Hat"
+    ],
+    "type": "Remote Script"
+}

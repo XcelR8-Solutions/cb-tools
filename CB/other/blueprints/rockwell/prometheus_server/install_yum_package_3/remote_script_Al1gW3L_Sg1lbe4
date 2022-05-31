@@ -1,0 +1,4 @@
+#!/bin/sh
+yum install -y {{ packages }}
+yum check-updates
+yum clean all

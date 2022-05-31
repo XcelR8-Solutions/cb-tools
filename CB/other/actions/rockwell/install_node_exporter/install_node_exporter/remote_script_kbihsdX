@@ -1,0 +1,28 @@
+#!/bin/bash
+
+enable_monitoring='{{ enable_monitoring }}'
+
+echo $enable_monitoring
+
+if [[ $enable_monitoring != 'True' ]]; then
+    exit 0
+fi
+
+PROMETHEUS_URL='https://packagecloud.io/prometheus-rpm/release/packages/el/7/node_exporter-1.1.2-1.el7.x86_64.rpm/download.rpm'
+DOWNLOAD_DESTINATION='/usr/tmp'
+
+yum install -y wget
+wget -q -P $DOWNLOAD_DESTINATION $PROMETHEUS_URL
+cd $DOWNLOAD_DESTINATION
+yum install -y download.rpm
+
+
+# enable firewall port if firewalld is active
+if [[ `command -v firewall-cmd` &&  `firewall-cmd --state` ==  'running' ]];
+then
+    firewall-cmd --add-port 9100/tcp --permanent
+    firewall-cmd --reload
+fi
+
+systemctl enable node_exporter
+systemctl start node_exporter

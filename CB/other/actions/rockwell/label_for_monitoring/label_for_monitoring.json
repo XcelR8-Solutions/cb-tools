@@ -1,0 +1,10 @@
+{
+    "action-input-default-values": [],
+    "base-action-name": "Label for Monitoring",
+    "continue-on-failure": false,
+    "description": "",
+    "enabled": "False",
+    "hook-point": "Post-Provision",
+    "name": "Label for Monitoring",
+    "run-on-statuses": "SUCCESS,WARNING"
+}

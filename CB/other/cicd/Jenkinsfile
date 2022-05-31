@@ -1,0 +1,36 @@
+pipeline {
+    agent any
+
+    environment {
+        CB_URL = '<# CB URL #>'
+        CB_USERNAME = '<# CB USERNAME #>'
+        CB_PASSWORD = '<# CB PASSWORD #>'
+    }
+
+    stages {
+        stage('Build') {
+            steps {
+                echo '--------------------------------'
+                echo '| Building..'
+                echo '| Package up the app <here>'
+                echo '--------------------------------'
+            }
+        }
+        stage('Test') {
+            steps {
+                echo '--------------------------------'
+                echo '| Testing..'
+                echo '| Test the app <here>'
+                echo '--------------------------------'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                echo '--------------------------------'
+                echo '| Deploying....'
+                sh 'python /home/jenkins/users/jbrassard/other/scripts/python/cb-launch-blueprint.py'
+                echo '--------------------------------'
+            }
+        }
+    }
+}

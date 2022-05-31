@@ -1,0 +1,73 @@
+#!/bin/bash
+
+CLOUDBOLT_IP=172.28.128.16
+CLOUDBOLT_SCHEME=http
+CLOUDBOLT_PORT=8080
+
+PROMETHEUS_PACKAGE='golang-github-prometheus'
+PROMETHEUS_URL='https://github.com/prometheus/prometheus/releases/download/v2.28.0/prometheus-2.28.0.linux-amd64.tar.gz'
+DOWNLOAD_DESTINATION='/usr/tmp'
+
+CLOUDBOLT_URL = "$CLOUDBOLT_SCHEME://$CLOUDBOLT_IP:$CLOUDBOLT_PORT"
+
+# install the default version of prometheus
+yum install -y $PROMETHEUS_PACKAGE
+
+# upgrade to the latest version of prometheus
+wget -q -P /usr/tmp $PROMETHEUS_URL
+cd /usr/tmp
+tar xvf prometheus-*.tar.gz
+cd prometheus-*
+
+# move files into place
+cp -u prometheus promtool /usr/bin
+cp -R consoles /etc/prometheus
+cp -R console_libraries /etc/prometheus
+
+# create prometheus user/group
+useradd -M prometheus -s /sbin/false
+chown -R prometheus /var/lib/prometheus
+
+# configure service discovery/targeting
+cat <<- EOF > /etc/prometheus/prometheus.yml
+# my global config
+global:
+  scrape_interval:     15s # Set the scrape interval to every 15 seconds. Default is every 1 minute.
+  evaluation_interval: 15s # Evaluate rules every 15 seconds. The default is every 1 minute.
+  # scrape_timeout is set to the global default (10s).
+
+# Alertmanager configuration
+alerting:
+  alertmanagers:
+  - static_configs:
+    - targets:
+      # - alertmanager:9093
+
+# Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
+rule_files:
+  # - "first_rules.yml"
+  # - "second_rules.yml"
+
+# A scrape configuration containing exactly one endpoint to scrape:
+# Here it's Prometheus itself.
+scrape_configs:
+  # The job name is added as a label \`job=<job_name>\` to any timeseries scraped from this config.
+  - job_name: 'prometheus'
+    static_configs:
+    - targets: ['localhost:9090']
+
+  - job_name: 'cloudbolt'
+    http_sd_configs:
+    - url: '${CLOUDBOLT_URL}/xui/monitoring/api/targets/'
+EOF
+
+# bind prometheus to an external port
+echo WEB_LISTEN_ADDRESS=0.0.0.0:9090 >> /etc/sysconfig/prometheus
+
+# enable and start the prometheus service
+systemctl enable prometheus
+systemctl start prometheus
+
+# enable firewall port
+firewall-cmd --add-port 9090/tcp --permanent
+firewall-cmd --reload

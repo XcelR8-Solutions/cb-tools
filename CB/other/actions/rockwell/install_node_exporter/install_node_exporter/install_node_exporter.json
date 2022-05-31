@@ -1,0 +1,38 @@
+{
+    "action-inputs": [
+        {
+            "available-all-servers": false,
+            "description": null,
+            "field-dependency-controlling-set": [],
+            "field-dependency-dependent-set": [],
+            "global-options": [],
+            "hide-if-default-value": false,
+            "label": "Enable Monitoring",
+            "name": "enable_monitoring",
+            "relevant-osfamilies": [],
+            "required": true,
+            "show-as-attribute": false,
+            "show-on-servers": false,
+            "type": "STR"
+        }
+    ],
+    "commandline-args": null,
+    "credentials": "YOUR_CREDENTIALS",
+    "description": "",
+    "execution-timeout": 240,
+    "max-retries": 0,
+    "name": "Install Node Exporter",
+    "remove-after-run": true,
+    "resource-technologies": [],
+    "run-with-sudo": true,
+    "script-filename": "remote_script_kbihsdX",
+    "shared": "False",
+    "target-os-families": [
+        "Linux -> Amazon Linux",
+        "Linux -> CentOS",
+        "Linux -> Fedora",
+        "Linux -> Oracle Enterprise Linux",
+        "Linux -> Red Hat"
+    ],
+    "type": "Remote Script"
+}

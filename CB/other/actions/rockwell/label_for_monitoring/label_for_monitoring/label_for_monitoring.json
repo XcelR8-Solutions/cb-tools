@@ -1,0 +1,10 @@
+{
+    "description": "",
+    "max-retries": 0,
+    "name": "Label for Monitoring",
+    "resource-technologies": [],
+    "script-filename": "cb_plugin_1624971447743489_A9T2IbF.py",
+    "shared": "False",
+    "target-os-families": [],
+    "type": "CloudBolt Plug-in"
+}

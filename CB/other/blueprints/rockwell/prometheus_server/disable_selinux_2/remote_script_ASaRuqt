@@ -1,0 +1,3 @@
+# Disable SELinux at OS-level
+sed -i 's/enforcing/permissive/g' /etc/selinux/config /etc/selinux/config
+setenforce Permissive

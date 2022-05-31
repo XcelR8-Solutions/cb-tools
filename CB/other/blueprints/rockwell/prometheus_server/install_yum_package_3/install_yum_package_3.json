@@ -1,0 +1,37 @@
+{
+    "action-inputs": [
+        {
+            "available-all-servers": false,
+            "description": "",
+            "field-dependency-controlling-set": [],
+            "field-dependency-dependent-set": [],
+            "global-options": [],
+            "hide-if-default-value": true,
+            "label": "Packages",
+            "name": "packages",
+            "relevant-osfamilies": [],
+            "required": true,
+            "show-as-attribute": false,
+            "show-on-servers": false,
+            "type": "STR"
+        }
+    ],
+    "commandline-args": null,
+    "credentials": "YOUR_CREDENTIALS",
+    "description": "",
+    "execution-timeout": 600,
+    "max-retries": 0,
+    "name": "Install Yum Package (3)",
+    "remove-after-run": true,
+    "resource-technologies": [],
+    "run-with-sudo": true,
+    "script-filename": "remote_script_Al1gW3L_Sg1lbe4",
+    "shared": "True",
+    "target-os-families": [
+        "Linux -> CentOS",
+        "Linux -> Fedora",
+        "Linux -> Oracle Enterprise Linux",
+        "Linux -> Red Hat"
+    ],
+    "type": "Remote Script"
+}
